@@ -16,15 +16,16 @@ var license = '/*\n' +
 		' */\n';
 
 gulp.task('default', [
+	'jquery-copy',
 	'js-copy',
 	'js-minify'
 ]);
 
 gulp.task('jquery-copy', function () {
-	return gulp.src('source/js/jquery.vdrop.js')
+	return gulp.src('node_modules/jquery/dist/jquery.min.js')
 			.pipe(strip())
 			.pipe(header(license))
-			.pipe(gulp.dest('dist/js'));
+			.pipe(gulp.dest('demo'));
 });
 
 gulp.task('js-copy', function () {
