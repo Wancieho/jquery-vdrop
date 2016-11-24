@@ -1,0 +1,1 @@
+.vDrop{position:relative}.vDrop .vClicker,.vDrop ul{position:absolute;left:0;width:220px}.vDrop select{visibility:hidden}.vDrop .vClicker{top:0;padding:5px;height:24px;line-height:24px;background:#ddd}.vDrop ul{display:none;top:34px;z-index:1;margin:0;padding:0;list-style:none;background:#ccc}.vDrop ul li a{display:block;padding:5px}

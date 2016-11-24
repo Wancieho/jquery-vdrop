@@ -16,10 +16,26 @@ var license = '/*\n' +
 		' */\n';
 
 gulp.task('default', [
+	'css-copy',
+	'css-minify',
 	'jquery-copy',
 	'js-copy',
 	'js-minify'
 ]);
+
+gulp.task('css-copy', function () {
+	return gulp.src('source/css/vdrop.less')
+			.pipe(less())
+			.pipe(gulp.dest('dist/css'));
+});
+
+gulp.task('css-minify', function () {
+	return gulp.src('source/css/vdrop.less')
+			.pipe(less())
+			.pipe(minify({compatibility: 'ie8'}))
+			.pipe(rename('vdrop.min.css'))
+			.pipe(gulp.dest('dist/css'));
+});
 
 gulp.task('jquery-copy', function () {
 	return gulp.src('node_modules/jquery/dist/jquery.min.js')
@@ -46,4 +62,6 @@ gulp.task('js-minify', function () {
 gulp.task('watch', function () {
 	gulp.watch('source/js/jquery.vdrop.js', ['js-copy']);
 	gulp.watch('source/js/jquery.vdrop.js', ['js-minify']);
+	gulp.watch('source/css/vdrop.less', ['css-copy']);
+	gulp.watch('source/css/vdrop.less', ['css-minify']);
 });
