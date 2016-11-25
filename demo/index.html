@@ -2,16 +2,17 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en-ZA">
 	<head>
         <title>vDrop demo</title>
-		<link href="../dist/css/vdrop.min.css" rel="stylesheet" type="text/css" />
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+		<link href="../dist/css/vdrop.min.css" rel="stylesheet" type="text/css"/>
 		<script src="jquery.min.js" type="text/javascript"></script>
 		<script src="../dist/js/jquery.vdrop.min.js" type="text/javascript"></script>
 		<script type="text/javascript">
 			(function ($) {
 				$(document).ready(function () {
-					$('select').vDrop();
+					$('select').vDrop({allowMultiple: false});
 
 					setTimeout(function () {
-						$('[name="delayed"]').append('<option>Sixth</option><option>Seventh</option>').data('plugin_vDrop').render();
+						$('[name="delayed"]').append('<option>Now</option><option>We\'re</option><option selected="selected">loaded & i\'m selected</option>').vDrop('render');
 					}, 1000);
 				});
 			})(jQuery);
@@ -21,34 +22,54 @@
 				font-family: arial, helvetica, sans-serif;
 				font-size: 14px;
 			}
+
+			.example{
+				margin-bottom: 20px;
+				padding: 10px;
+				border: 1px solid #ccc;
+			}
+
+			h2{
+				margin: 0;
+			}
 		</style>
     </head>
     <body>
 		<div>
 			<h1>vDrop demo</h1>
-			<select name="standard">
-				<option>First</option>
-				<option>Second</option>
-			</select>
-			<br/>
-			<select name="selected">
-				<option>Third</option>
-				<option selected="selected">Fourth</option>
-			</select>
-			<br/>
-			<select name="delayed"></select>
-			<br/>
-			<select name="grouping">
-				<optgroup label="One">
-					<option>Eighth</option>
-					<option>Ninth</option>
-				</optgroup>
-				<optgroup label="Two">
-					<option>Tenth</option>
-					<option>Eleventh</option>
-					<option>Twelfth</option>
-				</optgroup>
-			</select>
+			<div class="example">
+				<h2>Standard</h2>
+				<select name="standard">
+					<option>I am</option>
+					<option>Standard</option>
+				</select>
+			</div>
+			<div class="example">
+				<h2>Selected</h2>
+				<select name="selected">
+					<option value="3rd">This isn't</option>
+					<option selected="selected">Selected</option>
+				</select>
+			</div>
+			<div class="example">
+				<h2>Select option's create delayed (1 sec) to simulate AJAX</h2>
+				<select name="delayed"></select>
+			</div>
+			<div class="example">
+				<h2>Grouping</h2>
+				<select name="grouping">
+					<optgroup label="One">
+						<option>First</option>
+						<option>List</option>
+					</optgroup>
+					<optgroup label="Two">
+						<option>Second</option>
+						<option>List</option>
+						<option>With</option>
+						<option selected="selected">Selected</option>
+					</optgroup>
+				</select>
+			</div>
 		</div>
     </body>
 </html>
