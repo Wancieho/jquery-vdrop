@@ -12,8 +12,12 @@
 					$('select').vDrop({allowMultiple: false});
 
 					setTimeout(function () {
-						$('[name="delayed"]').append('<option>Now</option><option>We\'re</option><option selected="selected">loaded & i\'m selected</option>').vDrop('render');
+						$('[name="delayed"]').append('<option>Now</option><option>We\'re</option><option selected="selected">loaded & i\'m selected</option>').vDrop('update');
 					}, 1000);
+
+					$('[name="heading-close"]').closest('.example').find('h2').on('mouseover', function () {
+						$('[name="heading-close"]').vDrop('close');
+					});
 				});
 			})(jQuery);
 		</script>
@@ -52,7 +56,7 @@
 				</select>
 			</div>
 			<div class="example">
-				<h2>Select option's create delayed (1 sec) to simulate AJAX</h2>
+				<h2>Populated after interval</h2>
 				<select name="delayed"></select>
 			</div>
 			<div class="example">
@@ -68,6 +72,15 @@
 						<option>With</option>
 						<option selected="selected">Selected</option>
 					</optgroup>
+				</select>
+			</div>
+			<div class="example">
+				<h2>Heading hover closes dropdown</h2>
+				<select name="heading-close">
+					<option>Hovering</option>
+					<option>Heading</option>
+					<option>Closes</option>
+					<option>Me</option>
 				</select>
 			</div>
 		</div>

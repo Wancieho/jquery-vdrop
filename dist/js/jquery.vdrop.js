@@ -17,10 +17,10 @@
 		allowMultiple: true,
 		theme: ''
 	};
-	var elements = [];
+	var selects = [];
 
-	function Plugin(element, options) {
-		this.element = element;
+	function Plugin(select, options) {
+		this.select = select;
 		this.settings = $.extend({}, defaults, options);
 
 		create.apply(this);
@@ -31,32 +31,32 @@
 		var scope = this;
 		var theme = this.settings.theme !== '' && this.settings.theme !== undefined ? ' ' + this.settings.theme : '';
 
-		$(this.element).wrap('<div class="vDrop' + theme + '"></div>').parent().append('<a href="#" class="vClicker"></a><ul></ul>');
+		$(this.select).wrap('<div class="vDrop' + theme + '"></div>').parent().append('<a href="#" class="vClicker"></a><ul></ul>');
 
-		if (elements.length === 0) {
+		if (selects.length === 0) {
 			$(document).on('click', function () {
-				scope.hide();
+				scope.close();
 			});
 		}
 
-		elements.push($(this.element));
+		selects.push($(this.select));
 
-		this.render();
+		this.update();
 	}
 
 	function events() {
 		var scope = this;
 
-		$(this.element).siblings('.vClicker').on('click', function (e) {
+		$(this.select).siblings('.vClicker').on('click', function (e) {
 			e.preventDefault();
 			e.stopPropagation();
 
 			if (!scope.settings.allowMultiple) {
-				scope.hide(undefined, $(this).siblings('select'));
+				scope.close(null, $(this).siblings('select'));
 			}
 
 			if ($(this).hasClass('open')) {
-				scope.hide(scope.element);
+				scope.close(scope.select);
 			} else {
 				$(this).addClass('open').siblings('ul').stop(true).slideDown(scope.settings.transitionSpeed);
 			}
@@ -66,11 +66,15 @@
 	function optionsEvents() {
 		var scope = this;
 
-		$(this.element).siblings('ul').find('a').on('click', function (e) {
+		$(this.select).siblings('ul').find('a').on('click', function (e) {
 			e.preventDefault();
 			e.stopPropagation();
 
 			choose.apply(scope, [this]);
+		});
+
+		$(this.select).siblings('ul').find('li').on('mouseover', function () {
+
 		});
 
 	}
@@ -78,55 +82,63 @@
 	function choose(anchor) {
 		$(anchor).closest('ul').slideUp(this.settings.transitionSpeed).find('a').removeClass('selected');
 
-		$(anchor).addClass('selected');
-
-		$(anchor).closest('ul').siblings('.vClicker').text($(anchor).text());
-
-		this.hide($(this.element));
+		$(this.select).find('option').removeAttr('selected');
+		console.debug($(anchor).attr('data-index'));
+		$(this.select).find('option').eq($(anchor).attr('data-index')).attr('selected', 'selected');
 	}
 
 	$.extend(Plugin.prototype, {
-		render: function () {
+		update: function () {
 			var scope = this;
 
-			$(this.element).siblings('ul').empty();
+			$(this.select).siblings('ul').empty();
 
-			$.each($(this.element).find('option'), function (i, option) {
-				$(scope.element).siblings('ul').append('<li><a href="#" data-value="' + $(option).val() + '">' + $(option).text() + '</a></li>');
+			$.each($(this.select).find('option'), function (i, option) {
+				$(scope.select).siblings('ul').append('<li><a href="#" data-value="' + $(option).val() + '" data-index="' + i + '">' + $(option).text() + '</a></li>');
 			});
 
 			optionsEvents.apply(this);
 
-			if ($(this.element).find('option[selected]').length === 0) {
-				$(this.element).find('option').eq(0).attr('selected', 'selected');
+			if ($(this.select).find('option[selected]').length === 0) {
+				$(this.select).find('option').eq(0).attr('selected', 'selected');
 			}
 
-			$(this.element).siblings('ul').children().eq($(this.element).find('option:selected').index()).children().addClass('selected').attr('data-selected', true);
+			$(this.select).siblings('ul').children().eq($(this.select).find('option:selected').index()).children().addClass('selected');
 
-			$(this.element).siblings('.vClicker').text($(this.element).find('option:selected').text());
+			$(this.select).siblings('.vClicker').text($(this.select).find('option:selected').text());
 		},
-		hide: function (element, ignore) {
+		close: function (select, ignore) {
 			var scope = this;
 
-			if (element !== undefined) {
-				$(element).siblings('.vClicker').removeClass('open').siblings('ul').stop(true).slideUp(this.settings.transitionSpeed);
+			if (select !== undefined && select !== null) {
+				if ($(select).siblings('.vClicker').hasClass('open')) {
+					$(select).siblings('.vClicker').removeClass('open').siblings('ul').stop(true).slideUp(this.settings.transitionSpeed);
+
+
+				}
 			} else { 
-				$.each(elements, function () {
+				$.each(selects, function () {
 					if ($(this).attr('name') !== $(ignore).attr('name')) {
-						scope.hide(this);
+						scope.close(this);
 					}
 				});
 			}
 		}
 	});
 
-	$.fn[ pluginName ] = function (options) {
+	$.fn[pluginName] = function (options) {
 		return this.each(function () {
 			if (!$.data(this, 'plugin_' + pluginName)) {
 				$.data(this, 'plugin_' + pluginName, new Plugin(this, options));
 			} else {
-				if (options === 'render') {
-					$(this).data('plugin_' + pluginName).render();
+				switch (options) {
+					case 'update':
+						$(this).data('plugin_' + pluginName).update();
+						break;
+
+					case 'close':
+						$(this).data('plugin_' + pluginName).close($(this));
+						break;
 				}
 			}
 		});
