@@ -11,13 +11,13 @@
 				$(document).ready(function () {
 					$('select').vDrop({allowMultiple: false});
 
-					setTimeout(function () {
-						$('[name="delayed"]').append('<option>Now</option><option>We\'re</option><option selected="selected">loaded & i\'m selected</option>').vDrop('update');
-					}, 1000);
-
-					$('[name="heading-close"]').closest('.example').find('h2').on('mouseover', function () {
-						$('[name="heading-close"]').vDrop('close');
-					});
+//					setTimeout(function () {
+//						$('[name="delayed"]').append('<option>Now</option><option>We\'re</option><option selected="selected">loaded & i\'m selected</option>').vDrop('update');
+//					}, 1000);
+//
+//					$('[name="heading-close"]').closest('.example').find('h2').on('mouseover', function () {
+//						$('[name="heading-close"]').vDrop('close');
+//					});
 				});
 			})(jQuery);
 		</script>
@@ -44,45 +44,46 @@
 			<div class="example">
 				<h2>Standard</h2>
 				<select name="standard">
-					<option>I am</option>
+					<option>This is a</option>
 					<option>Standard</option>
+					<option>Dropdown</option>
 				</select>
 			</div>
 			<div class="example">
 				<h2>Selected</h2>
 				<select name="selected">
-					<option value="3rd">This isn't</option>
-					<option selected="selected">Selected</option>
+					<option value="3rd">This isn't selected</option>
+					<option selected="selected">This is pre-selected</option>
 				</select>
 			</div>
-			<div class="example">
-				<h2>Populated after interval</h2>
-				<select name="delayed"></select>
-			</div>
-			<div class="example">
-				<h2>Grouping</h2>
-				<select name="grouping">
-					<optgroup label="One">
-						<option>First</option>
-						<option>List</option>
-					</optgroup>
-					<optgroup label="Two">
-						<option>Second</option>
-						<option>List</option>
-						<option>With</option>
-						<option selected="selected">Selected</option>
-					</optgroup>
-				</select>
-			</div>
-			<div class="example">
-				<h2>Heading hover closes dropdown</h2>
-				<select name="heading-close">
-					<option>Hovering</option>
-					<option>Heading</option>
-					<option>Closes</option>
-					<option>Me</option>
-				</select>
-			</div>
+			<!--			<div class="example">
+							<h2>Populated after interval</h2>
+							<select name="delayed"></select>
+						</div>
+						<div class="example">
+							<h2>Grouping</h2>
+							<select name="grouping">
+								<optgroup label="One">
+									<option>First</option>
+									<option>List</option>
+								</optgroup>
+								<optgroup label="Two">
+									<option>Second</option>
+									<option>List</option>
+									<option>With</option>
+									<option selected="selected">Selected</option>
+								</optgroup>
+							</select>
+						</div>
+						<div class="example">
+							<h2>Heading hover closes dropdown</h2>
+							<select name="heading-close">
+								<option>Hovering</option>
+								<option>Heading</option>
+								<option>Closes</option>
+								<option>Me</option>
+							</select>
+						</div>-->
 		</div>
     </body>
 </html>

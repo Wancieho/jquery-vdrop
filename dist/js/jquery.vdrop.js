@@ -13,25 +13,54 @@
 
 	var pluginName = 'vDrop';
 	var defaults = {
-		transitionSpeed: 200,
+		transitionSpeed: 150,
 		allowMultiple: true,
 		theme: ''
 	};
 	var selects = [];
 
 	function Plugin(select, options) {
-		this.select = select;
+		this.$select = $(select);
+		this.$clicker = null;
+		this.$ul = null;
 		this.settings = $.extend({}, defaults, options);
 
 		create.apply(this);
-		events.apply(this);
 	}
 
 	function create() {
 		var scope = this;
 		var theme = this.settings.theme !== '' && this.settings.theme !== undefined ? ' ' + this.settings.theme : '';
 
-		$(this.select).wrap('<div class="vDrop' + theme + '"></div>').parent().append('<a href="#" class="vClicker"></a><ul></ul>');
+		this.$select.wrap('<div class="vDrop' + theme + '"></div>').parent().append('<a href="#" class="vClicker"><span></span><div class="vArrow"></div></a><ul></ul>');
+
+		this.$clicker = this.$select.siblings('a');
+		this.$ul = this.$select.siblings('ul');
+
+		this.$clicker.on('click', function (e) {
+			e.preventDefault();
+			e.stopPropagation();
+
+			if (selects.length === 0) {
+				$(document).on('click', function () {
+					scope.close();
+				});
+			}
+
+			if (!scope.settings.allowMultiple) {
+				scope.close(null, scope.$select);
+			}
+
+			if (scope.$ul.find('li').length > 0) {
+				if ($(this).hasClass('open')) {
+					scope.close(scope.$select);
+				} else {
+					$(this).addClass('open');
+
+					scope.$ul.stop(true).slideDown(scope.settings.transitionSpeed);
+				}
+			}
+		});
 
 		if (selects.length === 0) {
 			$(document).on('click', function () {
@@ -39,86 +68,59 @@
 			});
 		}
 
-		selects.push($(this.select));
+		selects.push(this.$select);
 
 		this.update();
 	}
 
-	function events() {
-		var scope = this;
-
-		$(this.select).siblings('.vClicker').on('click', function (e) {
-			e.preventDefault();
-			e.stopPropagation();
-
-			if (!scope.settings.allowMultiple) {
-				scope.close(null, $(this).siblings('select'));
-			}
-
-			if ($(this).hasClass('open')) {
-				scope.close(scope.select);
-			} else {
-				$(this).addClass('open').siblings('ul').stop(true).slideDown(scope.settings.transitionSpeed);
-			}
-		});
+	function choose(index) {
+		this.$select.find('option').removeAttr('selected').eq(index).attr('selected', 'selected');
+		console.debug(index);
+		refresh.apply(this);
 	}
 
-	function optionsEvents() {
-		var scope = this;
+	function refresh() {
+		this.$clicker.find('span').text(this.$select.find('option:selected').text());
 
-		$(this.select).siblings('ul').find('a').on('click', function (e) {
-			e.preventDefault();
-			e.stopPropagation();
-
-			choose.apply(scope, [this]);
-		});
-
-		$(this.select).siblings('ul').find('li').on('mouseover', function () {
-
-		});
-
-	}
-
-	function choose(anchor) {
-		$(anchor).closest('ul').slideUp(this.settings.transitionSpeed).find('a').removeClass('selected');
-
-		$(this.select).find('option').removeAttr('selected');
-		console.debug($(anchor).attr('data-index'));
-		$(this.select).find('option').eq($(anchor).attr('data-index')).attr('selected', 'selected');
+		this.$ul.find('a').removeClass('selected');
+		this.$ul.children().eq(this.$select.find('option:selected').index()).children().addClass('selected');
 	}
 
 	$.extend(Plugin.prototype, {
 		update: function () {
 			var scope = this;
 
-			$(this.select).siblings('ul').empty();
+			this.$ul.empty();
 
-			$.each($(this.select).find('option'), function (i, option) {
-				$(scope.select).siblings('ul').append('<li><a href="#" data-value="' + $(option).val() + '" data-index="' + i + '">' + $(option).text() + '</a></li>');
+			$.each(this.$select.find('option'), function (i, option) {
+				scope.$ul.append('<li><a href="#" data-value="' + $(option).val() + '" data-index="' + i + '">' + $(option).text() + '</a></li>');
 			});
 
-			optionsEvents.apply(this);
-
-			if ($(this.select).find('option[selected]').length === 0) {
-				$(this.select).find('option').eq(0).attr('selected', 'selected');
+			if (this.$select.find('option[selected]').length === 0) {
+				this.$select.find('option').eq(0).attr('selected', 'selected');
 			}
 
-			$(this.select).siblings('ul').children().eq($(this.select).find('option:selected').index()).children().addClass('selected');
+			this.$ul.find('a').on('click', function (e) {
+				e.preventDefault();
+				e.stopPropagation();
 
-			$(this.select).siblings('.vClicker').text($(this.select).find('option:selected').text());
+				choose.apply(scope, [parseInt($(this).attr('data-index'))]);
+			});
+
+			refresh.apply(scope);
 		},
-		close: function (select, ignore) {
+		close: function ($select, $ignore) {
 			var scope = this;
 
-			if (select !== undefined && select !== null) {
-				if ($(select).siblings('.vClicker').hasClass('open')) {
-					$(select).siblings('.vClicker').removeClass('open').siblings('ul').stop(true).slideUp(this.settings.transitionSpeed);
+			if ($select instanceof $) {
+				if ($select.siblings('.vClicker').hasClass('open')) {
+					$select.siblings('.vClicker').removeClass('open');
 
-
+					$select.siblings('ul').stop(true).slideUp(this.settings.transitionSpeed);
 				}
 			} else { 
 				$.each(selects, function () {
-					if ($(this).attr('name') !== $(ignore).attr('name')) {
+					if ($ignore === undefined || this.attr('name') !== $ignore.attr('name')) {
 						scope.close(this);
 					}
 				});
