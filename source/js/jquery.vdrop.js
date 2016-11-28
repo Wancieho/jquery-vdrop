@@ -25,7 +25,7 @@
 
 		this.$select.wrap('<div class="vDrop' + theme + '"></div>').parent().append('<a href="#" class="vClicker"><span></span><div class="vArrow"></div></a><ul></ul>');
 
-		this.$clicker = this.$select.siblings('a');
+		this.$clicker = this.$select.siblings('.vClicker');
 		this.$ul = this.$select.siblings('ul');
 
 		this.$clicker.on('click', function (e) {
@@ -68,27 +68,55 @@
 	}
 
 	function choose(index) {
-		//#TODO: dont write selected if option already selected
-		this.$select.find('option').removeAttr('selected').eq(index).attr('selected', 'selected');
-		console.debug(index);
-		refresh.apply(this);
+		if (index !== selectedOptionIndex.apply(this)) {
+			this.$select.find('option').removeAttr('selected').prop('selected', false);
+			this.$select.find('option').eq(index).attr('selected', 'selected').prop('selected', true);
+
+			updateUl.apply(this);
+		}
+
+		this.close();
 	}
 
-	function refresh() {
-		//update clicker text to reflect selected option text
+	function updateUl() {
 		this.$clicker.find('span').text(this.$select.find('option:selected').text());
 
+		//remove selected class from all anchors
 		this.$ul.find('a').removeClass('selected');
-//		console.debug(this.$select.find('option:selected').index());
-		this.$ul.children().eq(this.$select.find('option:selected').index()).children().addClass('selected');
+
+		//add selected class based on selected option index
+		this.$ul.children('li').eq(selectedOptionIndex.apply(this)).children('a').addClass('selected');
+	}
+
+	function selectedOptionIndex() {
+		if (this.$select.find('optgroup').length > 0) {
+			var counter = 0;
+			var index = 0;
+
+			$.each(this.$select.find('optgroup'), function () {
+				$.each($(this).find('option'), function () {
+					if ($(this).is(':selected')) {
+						index = counter;
+					}
+
+					counter++;
+				});
+			});
+
+			return index;
+		} else {
+			return this.$select.find('option:selected').index();
+		}
 	}
 
 	$.extend(Plugin.prototype, {
 		update: function () {
 			var scope = this;
 
+			this.$ul.find('a').unbind();
 			this.$ul.empty();
 
+			//#TODO: check for grouping and wrap insert LI with no anchor
 			//generate LIs for each option
 			$.each(this.$select.find('option'), function (i, option) {
 				scope.$ul.append('<li><a href="#" data-value="' + $(option).val() + '" data-index="' + i + '">' + $(option).text() + '</a></li>');
@@ -99,15 +127,16 @@
 				this.$select.find('option').eq(0).attr('selected', 'selected');
 			}
 
-			this.$ul.find('a').on('click', function (e) {
+			if (this.$select.find('option').length !== 0) {
+				updateUl.apply(scope);
+			}
+
+			this.$ul.find('a').unbind().on('click', function (e) {
 				e.preventDefault();
 				e.stopPropagation();
 
 				choose.apply(scope, [parseInt($(this).attr('data-index'))]);
-//				scope.close();
 			});
-
-			refresh.apply(scope);
 		},
 		close: function ($select, $ignore) {
 			var scope = this;

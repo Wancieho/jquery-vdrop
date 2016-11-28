@@ -34,7 +34,7 @@
 
 		this.$select.wrap('<div class="vDrop' + theme + '"></div>').parent().append('<a href="#" class="vClicker"><span></span><div class="vArrow"></div></a><ul></ul>');
 
-		this.$clicker = this.$select.siblings('a');
+		this.$clicker = this.$select.siblings('.vClicker');
 		this.$ul = this.$select.siblings('ul');
 
 		this.$clicker.on('click', function (e) {
@@ -74,22 +74,50 @@
 	}
 
 	function choose(index) {
-		this.$select.find('option').removeAttr('selected').eq(index).attr('selected', 'selected');
-		console.debug(index);
-		refresh.apply(this);
+		if (index !== selectedOptionIndex.apply(this)) {
+			this.$select.find('option').removeAttr('selected').prop('selected', false);
+			this.$select.find('option').eq(index).attr('selected', 'selected').prop('selected', true);
+
+			updateUl.apply(this);
+		}
+
+		this.close();
 	}
 
-	function refresh() {
+	function updateUl() {
 		this.$clicker.find('span').text(this.$select.find('option:selected').text());
 
 		this.$ul.find('a').removeClass('selected');
-		this.$ul.children().eq(this.$select.find('option:selected').index()).children().addClass('selected');
+
+		this.$ul.children('li').eq(selectedOptionIndex.apply(this)).children('a').addClass('selected');
+	}
+
+	function selectedOptionIndex() {
+		if (this.$select.find('optgroup').length > 0) {
+			var counter = 0;
+			var index = 0;
+
+			$.each(this.$select.find('optgroup'), function () {
+				$.each($(this).find('option'), function () {
+					if ($(this).is(':selected')) {
+						index = counter;
+					}
+
+					counter++;
+				});
+			});
+
+			return index;
+		} else {
+			return this.$select.find('option:selected').index();
+		}
 	}
 
 	$.extend(Plugin.prototype, {
 		update: function () {
 			var scope = this;
 
+			this.$ul.find('a').unbind();
 			this.$ul.empty();
 
 			$.each(this.$select.find('option'), function (i, option) {
@@ -100,14 +128,16 @@
 				this.$select.find('option').eq(0).attr('selected', 'selected');
 			}
 
-			this.$ul.find('a').on('click', function (e) {
+			if (this.$select.find('option').length !== 0) {
+				updateUl.apply(scope);
+			}
+
+			this.$ul.find('a').unbind().on('click', function (e) {
 				e.preventDefault();
 				e.stopPropagation();
 
 				choose.apply(scope, [parseInt($(this).attr('data-index'))]);
 			});
-
-			refresh.apply(scope);
 		},
 		close: function ($select, $ignore) {
 			var scope = this;
