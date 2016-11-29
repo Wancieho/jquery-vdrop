@@ -3,7 +3,7 @@
  * Description: Select dropdown jQuery plug-in
  * Author: https://github.com/Wancieho
  * License: MIT
- * Version: 0.0.1
+ * Version: 0.0.2
  * Dependancies: jquery-1.*
  * Date: 24/11/2016
  */
