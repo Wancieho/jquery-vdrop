@@ -4,14 +4,35 @@
 	box-shadow: @params;
 }
 
-.borderRadius(@radius){
-	-webkit-border-radius: @radius;
-	-moz-border-radius: @radius;
-	border-radius: @radius;
+.borderRadiuses(@topRight, @bottomRight, @bottomLeft, @topLeft){
+	-webkit-border-top-right-radius: @topRight;
+	-moz-border-radius-topright: @topRight;
+	border-top-right-radius: @topRight;
+
+	-webkit-border-bottom-right-radius: @bottomRight;
+	-moz-border-radius-bottomright: @bottomRight;
+	border-bottom-right-radius: @bottomRight;
+
+	-webkit-border-bottom-left-radius: @bottomLeft;
+	-moz-border-radius-bottomleft: @bottomLeft;
+	border-bottom-left-radius: @bottomLeft;
+
+	-webkit-border-top-left-radius: @topLeft;
+	-moz-border-radius-topleft: @topLeft;
+	border-top-left-radius: @topLeft;
+}
+
+.unselectable(){
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	-o-user-select: none;
+	user-select: none;
 }
 
 .vDrop{
 	position: relative;
+	margin-bottom: 10px;
 	height: 30px;
 
 	select{
@@ -21,7 +42,7 @@
 	a{
 		outline: none;
 		text-decoration: none;
-		color: #000;
+		color: #555;
 	}
 
 	.vClicker{
@@ -29,18 +50,24 @@
 		position: absolute;
 		top: 0;
 		left: 0;
-		padding: 4px;
-		width: 220px;
-		height: 22px;
-		line-height: 22px;
+		padding: 4px 6px;
+		width: 210px;
+		height: 20px;
+		line-height: 20px;
 		background: #fff;
-		border: 1px solid #bbb;
-		.borderRadius(3px);
+		border: 1px solid #ccc;
+		.borderRadiuses(3px, 3px, 3px, 3px);
+		.unselectable();
 
+		&.open{
+			.borderRadiuses(3px, 0, 0, 3px);
+		}
+
+		&.open,
 		&:hover{
 			.vArrow{
-				background-color: #dee;
-				border-color: #acf;
+				background-color: #def;
+				border-color: #9be;
 			}
 		}
 
@@ -48,13 +75,15 @@
 			position: absolute;
 			top: 0;
 			right: 0;
-			width: 30px;
-			height: 30px;
-			background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAIAAAACACAYAAADDPmHLAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAALEwAACxMBAJqcGAAAAZBJREFUeJzt0jtOw0AYhdG7AVgQj57XhlkBm6GDAiooIguEQrCxnZnfOUea2jO+XwIAAAAAAAAAAAAAAAAAAAAAAAAAAAAHnbW+wAK28IYmrpM8J7lpfZEZHrJ7w0Xri1RzneQ1yUeSt9SM4CHJe3ZveIkIRrvK1/jDqRbB9/GHI4IR9o1fLYJ944tghKvsftC+H1clgkPji+CAy/w9/nDek9y2ueZBY8YXwR5Txu81ginji+CHx0z7cb1F8J/xh/PY4L7dOU/ylJoRzBn/Kbu3k5oRGH9hlSIw/koqRGD8lc2N4G7Fuxn/SHqMwPhH1lMExm+khwiM31jLCIzfiRYRGL8zcyO4n/At43fqGBEYv3NrRmD8ItaIwPjFLBmB8YtaIgLjFzc3AuNvwJwIjL8Rx4rA+B1bOwLjF7BWBMYvZOkIjF/QUhEYv7C5ERh/A/4bgfE3ZGoExt+gsREYf8P+isD4J+C3CIx/Qn5GYPwTNERg/BN2HuMDAAAAAAAAAAAAAAAAAAAAAAAAAAAADX0C1EVRxOOijgAAAAAASUVORK5CYII=');
-			background-size: 30px auto;
+			width: 26px;
+			height: 26px;
+			background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAIAAAACACAYAAADDPmHLAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAALEwAACxMBAJqcGAAAAZBJREFUeJzt0jtOw0AYhdG7AVgQj57XhlkBm6GDAiooIguEQrCxnZnfOUea2jO+XwIAAAAAAAAAAAAAAAAAAAAAAAAAAAAHnbW+wAK28IYmrpM8J7lpfZEZHrJ7w0Xri1RzneQ1yUeSt9SM4CHJe3ZveIkIRrvK1/jDqRbB9/GHI4IR9o1fLYJ944tghKvsftC+H1clgkPji+CAy/w9/nDek9y2ueZBY8YXwR5Txu81ginji+CHx0z7cb1F8J/xh/PY4L7dOU/ylJoRzBn/Kbu3k5oRGH9hlSIw/koqRGD8lc2N4G7Fuxn/SHqMwPhH1lMExm+khwiM31jLCIzfiRYRGL8zcyO4n/At43fqGBEYv3NrRmD8ItaIwPjFLBmB8YtaIgLjFzc3AuNvwJwIjL8Rx4rA+B1bOwLjF7BWBMYvZOkIjF/QUhEYv7C5ERh/A/4bgfE3ZGoExt+gsREYf8P+isD4J+C3CIx/Qn5GYPwTNERg/BN2HuMDAAAAAAAAAAAAAAAAAAAAAAAAAAAADX0C1EVRxOOijgAAAAAASUVORK5CYII=') #eee;
+			background-size: 26px auto;
 			background-position: right center;
 			background-repeat: no-repeat;
+			border: 1px solid #eee;
 			border-left: 1px solid #ddd;
+			.borderRadiuses(2px, 2px, 0, 0);
 		}
 
 		&.open{
@@ -65,22 +94,25 @@
 	}
 
 	ul{
+		overflow: hidden;
 		display: none;
 		position: absolute;
-		top: 30px;
+		top: 29px;
 		left: 0;
 		z-index: 1;
 		margin: 0;
 		padding: 0;
 		list-style: none;
-		border: 1px solid #bbb;
-		.boxShadow(2px 2px 5px rgba(0, 0, 0, 0.2));
+		border: 1px solid #ccc;
+		.boxShadow(0 2px 5px rgba(0, 0, 0, 0.15));
 
 		li{
 			a{
 				display: block;
 				padding: 5px;
-				width: 218px;
+				min-width: 212px;
+				max-width: 280px;
+				white-space: nowrap;
 				background: #fff;
 
 				&.selected,

@@ -16,7 +16,7 @@
 					}, 1000);
 
 					$('[name="heading-close"]').closest('.example').find('h2').on('mouseover', function () {
-						$('[name="heading-close"]').data('plugin_vDrop').close();
+						$('[name="heading-close"]').data('plugin_vDrop').close($('[name="heading-close"]'));
 					});
 				});
 			})(jQuery);
@@ -29,7 +29,7 @@
 
 			.example{
 				margin-bottom: 20px;
-				padding: 10px;
+				padding: 10px 10px 0 10px;
 				border: 1px solid #ccc;
 			}
 
@@ -46,7 +46,7 @@
 				<select name="standard">
 					<option>This is a</option>
 					<option>Standard</option>
-					<option>Dropdown</option>
+					<option>Dropdown with a lot more text then the width of the LI</option>
 				</select>
 			</div>
 			<div class="example">
