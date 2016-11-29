@@ -62,8 +62,7 @@
 .vDrop ul li.optgroup span {
   display: block;
   padding: 5px;
-  width: 218px;
-  background: #fff;
+  background: #e8e8e8;
 }
 .vDrop ul li.optgroup ~ li:not(.optgroup) a {
   padding-left: 20px;
