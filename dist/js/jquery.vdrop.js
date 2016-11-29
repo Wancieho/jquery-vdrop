@@ -120,9 +120,18 @@
 			this.$ul.find('a').unbind();
 			this.$ul.empty();
 
-			$.each(this.$select.find('option'), function (i, option) {
-				scope.$ul.append('<li><a href="#" data-value="' + $(option).val() + '" data-index="' + i + '">' + $(option).text() + '</a></li>');
-			});
+            if (this.$select.find('optgroup').length > 0) {
+                $.each(this.$select.find('optgroup'), function (a, optgroup) {
+                    scope.$ul.append('<li class="optgroup"><span>' + $(optgroup).attr('label') + '</span></li>');
+                    $.each($(this).find('option'), function (i, option) {
+                        scope.$ul.append('<li><a href="#" data-value="' + $(option).val() + '" data-index="' + i + '">' + $(option).text() + '</a></li>');
+                    });
+                });
+            } else {
+                $.each(this.$select.find('option'), function (i, option) {
+                    scope.$ul.append('<li><a href="#" data-value="' + $(option).val() + '" data-index="' + i + '">' + $(option).text() + '</a></li>');
+                });
+            }
 
 			if (this.$select.find('option[selected]').length === 0) {
 				this.$select.find('option').eq(0).attr('selected', 'selected');

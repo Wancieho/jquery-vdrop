@@ -118,9 +118,18 @@
 
 			//#TODO: check for grouping and wrap insert LI with no anchor
 			//generate LIs for each option
-			$.each(this.$select.find('option'), function (i, option) {
-				scope.$ul.append('<li><a href="#" data-value="' + $(option).val() + '" data-index="' + i + '">' + $(option).text() + '</a></li>');
-			});
+            if (this.$select.find('optgroup').length > 0) {
+                $.each(this.$select.find('optgroup'), function (a, optgroup) {
+                    scope.$ul.append('<li class="optgroup"><span>' + $(optgroup).attr('label') + '</span></li>');
+                    $.each($(this).find('option'), function (i, option) {
+                        scope.$ul.append('<li><a href="#" data-value="' + $(option).val() + '" data-index="' + i + '">' + $(option).text() + '</a></li>');
+                    });
+                });
+            } else {
+                $.each(this.$select.find('option'), function (i, option) {
+                    scope.$ul.append('<li><a href="#" data-value="' + $(option).val() + '" data-index="' + i + '">' + $(option).text() + '</a></li>');
+                });
+            }
 
 			//no option is selected set it to the first
 			if (this.$select.find('option[selected]').length === 0) {

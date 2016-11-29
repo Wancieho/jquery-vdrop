@@ -73,10 +73,26 @@
 		margin: 0;
 		padding: 0;
 		list-style: none;
+        background: #fff;
 		border: 1px solid #bbb;
 		.boxShadow(2px 2px 5px rgba(0, 0, 0, 0.2));
 
 		li{
+            &.optgroup {
+                span{
+                    display: block;
+                    padding: 5px;
+                    width: 218px;
+                    background: #fff;
+                }
+                
+                & ~ li:not(.optgroup){
+                    a {
+                        padding-left: 20px;
+                    }
+                }
+            }
+            
 			a{
 				display: block;
 				padding: 5px;

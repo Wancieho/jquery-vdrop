@@ -53,10 +53,20 @@
   margin: 0;
   padding: 0;
   list-style: none;
+  background: #fff;
   border: 1px solid #bbb;
   -webkit-box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
   -moz-box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
   box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+}
+.vDrop ul li.optgroup span {
+  display: block;
+  padding: 5px;
+  width: 218px;
+  background: #fff;
+}
+.vDrop ul li.optgroup ~ li:not(.optgroup) a {
+  padding-left: 20px;
 }
 .vDrop ul li a {
   display: block;
