@@ -89,7 +89,7 @@
 
 		this.$ul.find('a').removeClass('selected');
 
-		this.$ul.children('li').eq(selectedOptionIndex.apply(this)).children('a').addClass('selected');
+		this.$ul.find('a[data-index="' + selectedOptionIndex.apply(this) + '"]').addClass('selected');
 	}
 
 	function selectedOptionIndex() {
@@ -120,9 +120,24 @@
 			this.$ul.find('a').unbind();
 			this.$ul.empty();
 
-			$.each(this.$select.find('option'), function (i, option) {
-				scope.$ul.append('<li><a href="#" data-value="' + $(option).val() + '" data-index="' + i + '">' + $(option).text() + '</a></li>');
-			});
+			if (this.$select.find('optgroup').length > 0) {
+				var counter = 0;
+
+				$.each(this.$select.find('optgroup'), function (a, optgroup) {
+					scope.$ul.append('<li class="optgroup"><span>' + $(optgroup).attr('label') + '</span></li>');
+
+					$.each($(this).find('option'), function (i, option) {
+						scope.$ul.append('<li class="option"><a href="#" data-value="' + $(option).val() + '" data-index="' + counter + '">' + $(option).text() + '</a></li>');
+
+						counter++;
+					});
+				});
+
+			} else {
+				$.each(this.$select.find('option'), function (i, option) {
+					scope.$ul.append('<li class="option"><a href="#" data-value="' + $(option).val() + '" data-index="' + i + '">' + $(option).text() + '</a></li>');
+				});
+			}
 
 			if (this.$select.find('option[selected]').length === 0) {
 				this.$select.find('option').eq(0).attr('selected', 'selected');

@@ -2,6 +2,7 @@
   position: relative;
   margin-bottom: 10px;
   height: 30px;
+  color: #555;
 }
 .vDrop select {
   visibility: hidden;
@@ -17,7 +18,7 @@
   top: 0;
   left: 0;
   padding: 4px 6px;
-  width: 210px;
+  width: 206px;
   height: 20px;
   line-height: 20px;
   background: #fff;
@@ -90,10 +91,12 @@
 .vDrop ul {
   overflow: hidden;
   display: none;
+  z-index: 1;
   position: absolute;
   top: 29px;
   left: 0;
-  z-index: 1;
+  min-width: 218px;
+  max-width: 280px;
   margin: 0;
   padding: 0;
   list-style: none;
@@ -102,11 +105,17 @@
   -moz-box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
 }
+.vDrop ul li.optgroup span {
+  display: block;
+  padding: 5px;
+  background: #e8e8e8;
+}
+.vDrop ul li.optgroup ~ .option a {
+  padding-left: 20px;
+}
 .vDrop ul li a {
   display: block;
   padding: 5px;
-  min-width: 212px;
-  max-width: 280px;
   white-space: nowrap;
   background: #fff;
 }
