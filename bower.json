@@ -1,6 +1,6 @@
 {
   "name": "jquery-vdrop",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "main" : "source/jquery.vdrop.js",
   "ignore": [
     "node_modules",

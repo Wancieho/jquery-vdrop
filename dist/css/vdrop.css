@@ -60,6 +60,9 @@
   background-color: #def;
   border-color: #9be;
 }
+.vDrop .vClicker span {
+  white-space: nowrap;
+}
 .vDrop .vClicker .vArrow {
   position: absolute;
   top: 0;

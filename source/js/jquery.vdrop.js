@@ -23,6 +23,12 @@
 		var scope = this;
 		var theme = this.settings.theme !== '' && this.settings.theme !== undefined ? ' ' + this.settings.theme : '';
 
+		if (this.$select.attr('name') === undefined) {
+			this.$select.wrap('<span style="outline: 5px solid red">');
+
+			throw 'Name attribute must be specified';
+		}
+
 		this.$select.wrap('<div class="vDrop' + theme + '"></div>').parent().append('<a href="#" class="vClicker"><span></span><div class="vArrow"></div></a><ul></ul>');
 
 		this.$clicker = this.$select.siblings('.vClicker');
@@ -69,8 +75,9 @@
 
 	function choose(index) {
 		if (index !== selectedOptionIndex.apply(this)) {
-			this.$select.find('option').removeAttr('selected').prop('selected', false);
-			this.$select.find('option').eq(index).attr('selected', 'selected').prop('selected', true);
+			this.$select.find('option').removeAttr('selected').prop('selected', false).eq(index).attr('selected', 'selected').prop('selected', true);
+
+			this.$select.trigger('change');
 
 			updateUl.apply(this);
 		}
@@ -145,6 +152,8 @@
 			if (this.$select.find('option').length !== 0) {
 				updateUl.apply(scope);
 			}
+
+			this.$select.trigger('update');
 
 			this.$ul.find('a').unbind().on('click', function (e) {
 				e.preventDefault();
