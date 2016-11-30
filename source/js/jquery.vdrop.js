@@ -149,9 +149,7 @@
 				this.$select.find('option').eq(0).attr('selected', 'selected');
 			}
 
-			if (this.$select.find('option').length !== 0) {
-				updateUl.apply(scope);
-			}
+			updateUl.apply(scope);
 
 			this.$select.trigger('update');
 

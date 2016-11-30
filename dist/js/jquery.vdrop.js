@@ -3,7 +3,7 @@
  * Description: Select dropdown jQuery plug-in
  * Author: https://github.com/Wancieho
  * License: MIT
- * Version: 0.0.3
+ * Version: 0.0.4
  * Dependancies: jquery-1.*
  * Date: 24/11/2016
  */
@@ -150,9 +150,7 @@
 				this.$select.find('option').eq(0).attr('selected', 'selected');
 			}
 
-			if (this.$select.find('option').length !== 0) {
-				updateUl.apply(scope);
-			}
+			updateUl.apply(scope);
 
 			this.$select.trigger('update');
 
